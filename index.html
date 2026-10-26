@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Vim Dungeon: a procedural Vim training game. Follow the path, delete every target with hjkl and x."
+    />
+    <title>Vim Dungeon · hjkl-x</title>
+    <link rel="icon" href="./logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles/theme.css" />
+  </head>
+  <body>
+    <canvas id="board" role="img" aria-label="Vim Dungeon path"></canvas>
+
+    <header class="hud">
+      <div class="brand">
+        <img
+          class="brand-logo"
+          src="./logo.svg"
+          alt=""
+          aria-hidden="true"
+        />
+        VIM DUNGEON <span>// hjkl·x</span> <em>PROCEDURAL</em>
+      </div>
+      <div class="stats">
+        <div class="hp" id="hp" aria-label="health">♥♥♥</div>
+        <div>path <b id="stage">01</b></div>
+        <div class="t">targets <b id="targets">0</b></div>
+        <div class="blocks">blocks <b id="blocks">0</b></div>
+        <div class="bomb">bomb <b id="bomb">—</b></div>
+        <div class="m">moves <b id="moves">0</b></div>
+        <div>seed <b id="seed">—</b></div>
+        <div class="pending" id="pending"></div>
+      </div>
+      <button
+        class="settings-toggle"
+        id="settings-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="settings-panel"
+      >
+        SETTINGS
+      </button>
+    </header>
+
+    <footer class="legend">
+      <div class="keys">
+        <kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd
+        ><span>move (hold)</span>
+        <kbd>w</kbd><kbd>b</kbd><span>jump 3 blocks (facing)</span>
+        <kbd id="start-key">I</kbd><span>line start</span>
+        <kbd id="end-key">A</kbd><span>line end</span>
+        <kbd>H</kbd><span>hints</span>
+        <kbd>yy</kbd><span>pick up bomb</span>
+        <kbd>p</kbd><kbd>P</kbd><span>drop bomb</span>
+        <kbd>dd</kbd><span>remove block</span>
+        <kbd>x</kbd><span>delete</span>
+        <kbd>r</kbd><span>new path</span>
+        <kbd>n</kbd><span>skip</span>
+      </div>
+      <div class="keylog" id="keylog"></div>
+    </footer>
+
+    <div class="settings-panel" id="settings-panel" hidden>
+    <div class="settings-title">Settings</div>
+    <label class="setting-row">
+      <span>Hints</span>
+      <input type="checkbox" id="setting-hints" checked />
+    </label>
+    <label class="setting-row">
+      <span>Swap I / A</span>
+      <input type="checkbox" id="setting-swap" />
+    </label>
+    <div class="settings-note">H toggles hints · Esc closes</div>
+  </div>
+
+  <div class="toast" id="toast" aria-hidden="true"></div>
+    <div class="sr-only" id="live" role="status" aria-live="polite"></div>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
