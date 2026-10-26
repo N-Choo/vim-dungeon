@@ -3,7 +3,7 @@
 > A full-screen, procedural game for learning Vim motions through exploration, combat, and puzzle-solving.
 
 <p align="center">
-  <img src="./screenshot.png" alt="Vim Dungeon gameplay" width="820" />
+  <img src="./gamplay.gif" alt="Vim Dungeon gameplay" width="820" />
 </p>
 
 ## How to Play
@@ -145,7 +145,7 @@ Tests cover:
 game/
 ├── index.html
 ├── logo.svg
-├── screenshot.png
+├── gamplay.gif
 ├── src/
 │   ├── main.js              # Boot, input, settings, animation loop
 │   ├── config.js            # Default I/A swap setting
