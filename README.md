@@ -1,12 +1,10 @@
 # Vim Dungeon
-
-> A full-screen, procedural game for learning Vim motions through exploration, combat, and puzzle-solving.
-
 <p align="center">
   <img src="./screenshot.png" alt="Vim Dungeon gameplay" width="820" />
 </p>
 
 ## How to Play
+> LIVE : https://raspberrypi.ibex-mooneye.ts.net:10002/
 
 Each run generates a winding path with orange `o` targets to destroy. Navigate the path using Vim motions, avoid Pac-Men, and clear blockers to reach your objectives.
 
