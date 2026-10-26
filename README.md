@@ -1,168 +1,78 @@
 # Vim Dungeon
+
 <p align="center">
   <img src="./gamplay.gif" alt="Vim Dungeon gameplay" width="820" />
 </p>
 
+Learn Vim motions by playing. Walk a winding path, destroy targets, and dodge Pac-Men.
+
+**Live:** https://raspberrypi.ibex-mooneye.ts.net:10000/
+
+> Implemented by DeepSeek and designed stage by stage in Linear. The game is fun to play, and most seeded paths are difficult.
+
 ## How to Play
-> LIVE : https://raspberrypi.ibex-mooneye.ts.net:10000/
 
-Each run generates a winding path with orange `o` targets to destroy. Navigate the path using Vim motions, avoid Pac-Men, and clear blockers to reach your objectives.
+- **Move:** `h j k l` along the path dots.
+- **Destroy targets:** stand on an orange `o` and press `x`.
+- **Avoid Pac-Men:** contact costs a heart.
+- **Clear blockers:** face one and press `dd`.
+- **Use bombs:** pick up with `yy`, drop with `p` or `P`. They explode after 3 seconds, destroying Pac-Men within 5 blocks.
+- **Progress:** clear the path for a longer stage. Each stage adds one Pac-Man (max six) and 3-5 blockers.
 
-- **Move:** Use `h j k l` to move between adjacent path dots.
-- **Destroy targets:** Stand on an orange `o` and press `x`.
-- **Avoid enemies:** Pac-Men patrol the path and cost you a heart on contact.
-- **Clear blockers:** Face a blocker and press `dd`.
-- **Use bombs:** Pick up a bomb with `yy`, then drop it with `p` or `P`.
-- **Progress:** Clear the path to generate a longer, more challenging stage.
+## Run Locally
 
-Each new stage adds one Pac-Man, up to a maximum of six, along with 3–5 randomly placed blockers.
-
-## Getting Started
-
-Vim Dungeon uses plain JavaScript ES modules and Canvas. No build step or dependencies are required.
+No build step or dependencies. Serve over HTTP, because ES modules don't work from `file://`.
 
 ```bash
 cd game
 python3 -m http.server 8080
 ```
 
-Open [http://localhost:8080](http://localhost:8080) in your browser.
-
-> **Note:** The game must be served over HTTP. Opening `index.html` directly through `file://` will not work because ES modules require an HTTP server.
+Open [http://localhost:8080](http://localhost:8080).
 
 ## Controls
 
-### Movement
+| Key | Action |
+|---|---|
+| `h` `j` `k` `l` | Move along the path |
+| `w` / `b` | Jump forward/back up to 3 dots |
+| `I` / `A` | Jump to line start/end |
+| `x` | Delete target |
+| `dd` | Remove blocker in front |
+| `yy` | Pick up a bomb (one at a time) |
+| `p` / `P` | Drop bomb on next/previous block |
+| `H` | Toggle hints |
+| `r` | New path, same stage |
+| `n` | Skip to next stage |
+| `Esc` | Close settings |
 
-| Key             | Action                                             |
-| --------------- | -------------------------------------------------- |
-| `h` `j` `k` `l` | Move along the path in the corresponding direction |
-| `w`             | Jump forward up to 3 contiguous path dots          |
-| `b`             | Jump backward up to 3 contiguous path dots         |
-| `I`             | Jump to the start of the current line              |
-| `A`             | Jump to the end of the current line                |
-
-Hold `h`, `j`, `k`, or `l` to keep moving. The last movement direction determines the direction used by `w` and `b`.
-
-Jumps stop early if the contiguous path ends. Neither movement nor jumps can cross empty cells or gaps.
-
-### Combat and Interaction
-
-| Key  | Action                                         |
-| ---- | ---------------------------------------------- |
-| `x`  | Delete the target under the cursor             |
-| `dd` | Remove the blocker immediately in front of you |
-| `yy` | Pick up one bomb                               |
-| `p`  | Drop the held bomb on the next block           |
-| `P`  | Drop the held bomb on the previous block       |
-
-You can carry only one bomb at a time. A dropped bomb explodes after 3 seconds, destroying Pac-Men within a 5-block radius.
-
-Blockers prevent movement, jumps, and bomb placement until they are removed with `dd`.
-
-### Game and Interface
-
-| Key   | Action                                   |
-| ----- | ---------------------------------------- |
-| `H`   | Toggle hints                             |
-| `r`   | Generate a new path at the current stage |
-| `n`   | Skip to the next stage                   |
-| `Esc` | Close the Settings panel                 |
-
-## Game Mechanics
-
-### Health and Collisions
-
-- Touching a Pac-Man costs one heart.
-- After taking damage, you receive a brief period of invulnerability.
-- When you run out of hearts, the current path restarts.
-
-### Path and Line Boundaries
-
-A **line** is a straight run of path dots between turns.
-
-The current line's start and end points are marked on the board. Use `I` and `A` to jump directly to these boundaries.
-
-### Hints
-
-Hints display key badges for `I`, `A`, `x`, `dd`, and `yy`.
-
-Disabling hints hides the badges but preserves the colored rings marking the `I` and `A` jump points.
-
-### Movement Feedback and Scoring
-
-- Attempting to move off the path flashes the cursor red without moving it.
-- Every routed key is counted in the move total.
+Movement and jumps can't cross gaps or blockers. Taking damage grants brief invulnerability, and losing all hearts restarts the path.
 
 ## Settings
 
-Open the **SETTINGS** button in the top-right corner to configure:
+Open **SETTINGS** (top right) to toggle hints or swap `I` / `A`. Both persist in `localStorage`.
 
-| Setting    | Description                                       |
-| ---------- | ------------------------------------------------- |
-| Hints      | Toggle key badges; equivalent to pressing `H`     |
-| Swap I / A | Swap the line-start and line-end keys immediately |
+You can also set the swap default with `?swap=1` in the URL or `swapStartEnd: true` in `src/config.js`.
 
-Settings persist in `localStorage`:
-
-- `vim-dungeon:hints`
-- `vim-dungeon:swap-ai`
-
-### Swapping `I` and `A`
-
-You can swap the start and end keys through any of these options:
-
-- **Settings:** Toggle _Swap I / A_.
-- **Configuration:** Set `swapStartEnd: true` in `src/config.js`.
-- **URL parameter:** Add `?swap=1` to the URL.
-
-The configuration file and URL parameter provide defaults; the Settings panel lets you change the behavior in-game.
-
-## Running Tests
-
-Run the test suite with Node.js:
+## Tests
 
 ```bash
 cd game
 node --test
 ```
 
-Tests cover:
-
-- Seeded path generation and target placement
-- Dot-only movement and blocked-move feedback
-- Pac-Man movement, jumping, and collisions
-- Random blockers and `dd`
-- Bomb placement and explosions
-- Line-boundary jumps
-- Path completion and stage progression
-
-## Project Structure
+## Structure
 
 ```text
 game/
 ├── index.html
-├── logo.svg
-├── gamplay.gif
 ├── src/
-│   ├── main.js              # Boot, input, settings, animation loop
-│   ├── config.js            # Default I/A swap setting
-│   ├── layout.js            # Responsive grid sizing
-│   ├── core/
-│   │   ├── rng.js           # Seeded random numbers
-│   │   ├── path.js          # Path generation and target placement
-│   │   └── game.js          # Game state and rules
-│   ├── render/
-│   │   └── canvas.js        # Canvas board renderer
-│   └── ui/
-│       └── hud.js           # HUD, toast, and live region
-├── styles/
-│   └── theme.css            # Gruvbox-inspired theme
-└── tests/
-    ├── path.test.js
-    ├── game.test.js
-    ├── ghosts.test.js
-    ├── bombs.test.js
-    ├── blocks.test.js
-    └── boundaries.test.js
+│   ├── main.js        # Boot, input, loop
+│   ├── config.js      # Default settings
+│   ├── layout.js      # Grid sizing
+│   ├── core/          # RNG, path generation, game rules
+│   ├── render/        # Canvas renderer
+│   └── ui/            # HUD
+├── styles/theme.css   # Gruvbox-inspired theme
+└── tests/             # Path, game, ghost, bomb, block, boundary tests
 ```
